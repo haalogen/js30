@@ -59,13 +59,11 @@ function handleKey(e) {
 }
 
 function toggleFullscreen(e) {
-  if (fullscreen) {
+  if (document.webkitIsFullScreen) {
     document.webkitExitFullscreen();
   } else {
     player.webkitRequestFullscreen();
   }
-
-  fullscreen = !fullscreen;
 }
 
 // Hook up the listeners
@@ -85,7 +83,6 @@ progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
 progress.addEventListener('mousedown', () => mousedown = true);
 progress.addEventListener('mouseup', () => mousedown = false);
 
-let fullscreen = false;
 document.addEventListener('keydown', handleKey);
 video.addEventListener('dblclick', toggleFullscreen);
 fullscreenBtn.addEventListener('click', toggleFullscreen);
