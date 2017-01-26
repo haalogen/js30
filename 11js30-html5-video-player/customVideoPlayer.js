@@ -62,7 +62,7 @@ function toggleFullscreen(e) {
   if (fullscreen) {
     document.webkitExitFullscreen();
   } else {
-    video.webkitRequestFullscreen();
+    player.webkitRequestFullscreen();
   }
 
   fullscreen = !fullscreen;
