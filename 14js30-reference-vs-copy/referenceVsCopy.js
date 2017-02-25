@@ -90,7 +90,7 @@ const dev = Object.assign({}, wes);
 const dev2 = JSON.parse(JSON.stringify(wes));
 
 dev.name = 'Wesley';
-dev.social.twitter = '@coolman'; // Oh shit
+dev.social.twitter = '@coolman'; // changes in BOTH wes, dev
 
 console.log(dev);
 console.log(dev.social);
