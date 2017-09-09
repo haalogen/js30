@@ -3,21 +3,34 @@ const SECS_IN_MIN = 60;
 const timerDisplay = document.querySelector('.display__time-left');
 const endTime = document.querySelector('.display__end-time');
 const buttons = document.querySelectorAll('[data-time]');
-const audio = document.querySelector(`audio`);
+const audio = document.querySelector('audio');
+const songsFolder = './sounds/';
+const songsList = [
+  'always.mp3',
+  'haifisch.mp3',
+  'happy.mp3',
+  'september_burns.mp3',
+  'titanic_flute.mp3'
+];
 let countdown;
 let alarmSound;
 
 
+function changeSong () {
+  // choose random alarm song
+  newSong = songsList[ Math.floor(Math.random() * songsList.length) ];
+  audio.src = songsFolder + newSong;
+  audio.load(); // preload alarm song
+}
 
 function timer (seconds) {
   // clear any existing timers
   clearInterval(countdown);
-  audio.pause(); // pause alarm sound
 
   const now = Date.now(); // when timer started
   const then = now + seconds * MSECS_IN_SEC;
   displayTimeLeft(seconds); // dislpay once
-  displayEndTime(then); // dislpay once
+  displayEndTime(then); // display once
 
   countdown = setInterval(() => {
     const secondsLeft = Math.round((then - Date.now()) / MSECS_IN_SEC);
@@ -62,14 +75,21 @@ function loopAlarmSound () {
 }
 
 function startTimer () {
+  audio.pause(); // pause alarm sound
+
   const seconds = parseInt(this.dataset.time);
   timer(seconds);
+
+  changeSong();
 }
 
 buttons.forEach(button => button.addEventListener('click', startTimer));
 document.customForm.addEventListener('submit', function (e) {
   e.preventDefault(); // prevent page reloading
+  audio.pause(); // pause alarm sound
+
   const mins = this.minutes.value;
   timer(mins * SECS_IN_MIN);
+  changeSong();
   this.reset(); // clear input value
 })
