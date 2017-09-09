@@ -3,13 +3,16 @@ const SECS_IN_MIN = 60;
 const timerDisplay = document.querySelector('.display__time-left');
 const endTime = document.querySelector('.display__end-time');
 const buttons = document.querySelectorAll('[data-time]');
+const audio = document.querySelector(`audio`);
 let countdown;
+let alarmSound;
 
 
 
 function timer (seconds) {
   // clear any existing timers
   clearInterval(countdown);
+  audio.pause(); // pause alarm sound
 
   const now = Date.now(); // when timer started
   const then = now + seconds * MSECS_IN_SEC;
@@ -21,6 +24,7 @@ function timer (seconds) {
     // check if we should stop it
     if (secondsLeft < 0) {
       clearInterval(countdown);
+      loopAlarmSound();
       return;
     }
     // display it
@@ -47,6 +51,14 @@ function displayEndTime (timestamp) {
   const paddedMinutes = ((minutes < 10) ? '0' : '') + minutes;
   // with time conversion to 12-hour format
   endTime.textContent = `Be back at ${adjustedHour}:${paddedMinutes}`;
+}
+
+function loopAlarmSound () {
+  if (!audio) return;
+
+  audio.currentTime = 0; // rewind audio file to the start
+  audio.loop = true;
+  audio.play();
 }
 
 function startTimer () {
