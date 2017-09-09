@@ -13,12 +13,19 @@ const songsList = [
   'titanic_flute.mp3'
 ];
 let countdown;
-let alarmSound;
 
 
 function changeSong () {
-  // choose random alarm song
-  newSong = songsList[ Math.floor(Math.random() * songsList.length) ];
+  const prevSongPath = audio.src;
+  let newSong = songsList[
+    Math.floor(Math.random() * songsList.length) ];
+
+  // choose next alarm song
+  while (prevSongPath.endsWith(newSong)) {
+    console.log('This song has just played!');
+    newSong = songsList[Math.floor(Math.random() * songsList.length)];
+  }
+
   audio.src = songsFolder + newSong;
   audio.load(); // preload alarm song
 }
@@ -87,9 +94,10 @@ buttons.forEach(button => button.addEventListener('click', startTimer));
 document.customForm.addEventListener('submit', function (e) {
   e.preventDefault(); // prevent page reloading
   audio.pause(); // pause alarm sound
+  changeSong();
 
   const mins = this.minutes.value;
   timer(mins * SECS_IN_MIN);
-  changeSong();
+
   this.reset(); // clear input value
 })
